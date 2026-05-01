@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code Executor</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        #result { margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <h1>Code Executor</h1>
+    <form id="codeForm">
+        <textarea id="code" rows="10" cols="50" placeholder="Write your code here..."></textarea><br>
+        <button type="submit">Execute</button>
+    </form>
+    <div id="result"></div>
+
+    <script>
+        document.getElementById('codeForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const code = document.getElementById('code').value;
+
+            fetch('/execute', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ code })
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('result').innerText = data.output || data.error;
+            });
+        });
+    </script>
+</body>
+</html>
